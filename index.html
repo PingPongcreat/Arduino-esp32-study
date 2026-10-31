@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IoT Skill Trainer | เตรียมแข่งขัน ปวช.</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+  <nav><div class="brand">⚡ IoT Skill Trainer</div><span>ESP32 • Arduino • ปวช.</span></nav>
+  <div class="hero-content">
+    <p class="eyebrow">14-DAY COMPETITION PREP</p>
+    <h1>ฝึกทักษะระบบอัจฉริยะ<br><span>สมองกลฝังตัวและ IoT</span></h1>
+    <p>รวมเนื้อหา แบบฝึกหัด โค้ดตัวอย่าง และข้อสอบจำลองในเว็บเดียว</p>
+    <a class="button primary" href="#study">เริ่มฝึกเลย ↓</a>
+  </div>
+  <div class="hero-stats"><div><b>14</b><small>วันเตรียมตัว</small></div><div><b>4</b><small>หัวข้อหลัก</small></div><div><b>5+</b><small>แบบฝึกปฏิบัติ</small></div></div>
+</header>
+
+<main>
+<section id="study" class="section">
+  <div class="section-heading"><div><p class="eyebrow">LEARNING PATH</p><h2>แผนฝึก</h2></div><span class="muted">จดบันทึกแล้วกด “บันทึก” ข้อมูลจะอยู่ครบเมื่อกลับมาเปิดใหม่</span></div>
+  <div id="plan" class="plan-grid"></div>
+  <div class="progress-wrap"><div class="progress-label"><span>ความคืบหน้า</span><b id="progressText">0/14 แผน</b></div><div class="progress"><div id="progressBar"></div></div></div>
+</section>
+
+<section class="section">
+  <p class="eyebrow">QUICK REFERENCE</p><h2>คำสั่ง Arduino ที่ต้องรู้</h2>
+  <div class="table-wrap"><table><thead><tr><th>คำสั่ง</th><th>หน้าที่</th></tr></thead><tbody>
+  <tr><td><code>pinMode(pin, OUTPUT)</code></td><td>กำหนดขาเป็นเอาต์พุต</td></tr>
+  <tr><td><code>digitalWrite(pin, HIGH/LOW)</code></td><td>สั่งเปิด/ปิดสัญญาณดิจิทัล</td></tr>
+  <tr><td><code>digitalRead(pin)</code></td><td>อ่านสถานะดิจิทัล</td></tr>
+  <tr><td><code>delay(1000)</code></td><td>หน่วงเวลา 1 วินาที (มิลลิวินาที)</td></tr>
+  <tr><td><code>Serial.begin(115200)</code></td><td>เริ่ม Serial Monitor</td></tr>
+  <tr><td><code>Serial.println(x)</code></td><td>แสดงข้อมูลพร้อมขึ้นบรรทัดใหม่</td></tr>
+  <tr><td><code>analogRead(pin)</code></td><td>อ่านค่าแอนะล็อก</td></tr>
+  <tr><td><code>pulseIn(pin, HIGH)</code></td><td>วัดระยะเวลาของพัลส์</td></tr>
+  <tr><td><code>if / else</code></td><td>เลือกทำงานตามเงื่อนไข</td></tr>
+  </tbody></table></div>
+</section>
+
+<section class="section">
+  <p class="eyebrow">HARDWARE PRACTICE</p><h2>บทเรียนและโค้ดตัวอย่าง</h2>
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-tab="led">LED</button><button class="tab" data-tab="rgb">RGB LED</button>
+    <button class="tab" data-tab="ultra">Ultrasonic</button><button class="tab" data-tab="lcd">LCD I2C</button>
+  </div>
+  <article class="lesson active" id="led">
+    <h3>1. LED กระพริบ</h3><p>ต่อ GPIO 25 ผ่านตัวต้านทาน 220–330Ω ไปยังขาบวก LED และต่อขาลบลง GND</p>
+    <pre><code>const int LED = 25;
+
+void setup() {
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(LED, HIGH);
+  delay(1000);
+  digitalWrite(LED, LOW);
+  delay(1000);
+}</code></pre>
+    <p class="tip">โจทย์ดัดแปลง: ให้ LED ติด 200 ms และดับ 800 ms</p>
+  </article>
+  <article class="lesson" id="rgb">
+    <h3>2. RGB LED เปลี่ยนสี</h3><p>ตัวอย่างนี้ใช้ RGB แบบ Common Cathode โดยแต่ละช่องสีต้องมีตัวต้านทานของตัวเอง</p>
+    <ul><li>R → GPIO 25</li><li>G → GPIO 26</li><li>B → GPIO 27</li><li>ขาร่วม → GND</li></ul>
+    <pre><code>const int R = 25, G = 26, B = 27;
+
+void setup() {
+  pinMode(R, OUTPUT);
+  pinMode(G, OUTPUT);
+  pinMode(B, OUTPUT);
+}
+
+void loop() {
+  // สีแดง
+  digitalWrite(R, HIGH);
+  digitalWrite(G, LOW);
+  digitalWrite(B, LOW);
+  delay(1000);
+
+  // สีเขียว
+  digitalWrite(R, LOW);
+  digitalWrite(G, HIGH);
+  digitalWrite(B, LOW);
+  delay(1000);
+
+  // สีน้ำเงิน
+  digitalWrite(R, LOW);
+  digitalWrite(G, LOW);
+  digitalWrite(B, HIGH);
+  delay(1000);
+
+  // สีเหลือง = แดง + เขียว
+  digitalWrite(R, HIGH);
+  digitalWrite(G, HIGH);
+  digitalWrite(B, LOW);
+  delay(1000);
+}</code></pre>
+    <p class="tip">Common Anode ต้องกลับตรรกะ HIGH/LOW และต่อขาร่วมตามชนิดอุปกรณ์</p>
+  </article>
+  <article class="lesson" id="ultra">
+    <h3>3. Ultrasonic HC-SR04</h3><p>Trig สั่งส่งคลื่นเสียง, Echo ให้สัญญาณสำหรับจับเวลา</p>
+    <pre><code>const int TRIG = 5;
+const int ECHO = 18;
+const int LED = 25;
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(TRIG, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG, LOW);
+
+  long duration = pulseIn(ECHO, HIGH, 30000);
+
+  if (duration == 0) {
+    Serial.println("No echo");
+    digitalWrite(LED, LOW);
+  } else {
+    float cm = duration * 0.0343 / 2;
+    Serial.print("Distance: ");
+    Serial.print(cm);
+    Serial.println(" cm");
+
+    digitalWrite(LED, cm < 10 ? HIGH : LOW);
+  }
+  delay(200);
+}</code></pre>
+    <p class="formula">ระยะทาง (cm) = เวลา Echo (µs) × 0.0343 ÷ 2</p>
+  </article>
+  <article class="lesson" id="lcd">
+    <h3>4. LCD 1602 I2C</h3><p>ตัวอย่างใช้ Address 0x27 และ ESP32 SDA=21, SCL=22 (ตรวจสอบ Address/ขาจริงของบอร์ด)</p>
+    <div class="table-wrap"><table><tbody><tr><th>คำสั่ง</th><th>หน้าที่</th></tr>
+    <tr><td><code>lcd.init()</code></td><td>เริ่มต้นจอ</td></tr><tr><td><code>lcd.backlight()</code></td><td>เปิดไฟพื้นหลัง</td></tr>
+    <tr><td><code>lcd.noBacklight()</code></td><td>ปิดไฟพื้นหลัง</td></tr><tr><td><code>lcd.clear()</code></td><td>ล้างข้อความ</td></tr>
+    <tr><td><code>lcd.setCursor(col,row)</code></td><td>กำหนดตำแหน่ง (เริ่มนับจาก 0)</td></tr><tr><td><code>lcd.print()</code></td><td>แสดงข้อความ/ตัวเลข</td></tr></tbody></table></div>
+    <pre><code>#include &lt;Wire.h&gt;
+#include &lt;LiquidCrystal_I2C.h&gt;
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+void setup() {
+  Wire.begin(21, 22);
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(0, 0);
+  lcd.print("Hello Pae!");
+  lcd.setCursor(0, 1);
+  lcd.print("IOT SYSTEM");
+}
+
+void loop() {}</code></pre>
+  </article>
+</section>
+
+<section class="section">
+  <p class="eyebrow">CHALLENGE MODE</p><h2>โจทย์ปฏิบัติจำลอง</h2>
+  <div class="challenge-grid">
+    <div class="challenge"><span class="tag">15 นาที</span><h3>A. ไฟจราจรจำลอง</h3><p>เขียว 3 วินาที → เหลือง 1 วินาที → แดง 3 วินาที แล้ววนซ้ำ</p><details><summary>แนวคิดเฉลย</summary><p>กำหนด GPIO แยก 3 ขา ตั้ง OUTPUT ทั้งหมด แล้วเปิดทีละสีตามลำดับ ปิดสีอื่นทุกครั้งก่อนเปลี่ยนสี</p></details></div>
+    <div class="challenge"><span class="tag">20 นาที</span><h3>B. RGB ตามระยะ</h3><p>น้อยกว่า 10 cm = แดง, 10–30 cm = เหลือง, มากกว่า 30 cm = เขียว</p><details><summary>แนวคิดเฉลย</summary><p>อ่านระยะจาก HC-SR04 แล้วใช้ if / else if / else กำหนด R,G,B: แดง (1,0,0), เหลือง (1,1,0), เขียว (0,1,0) สำหรับ Common Cathode</p></details></div>
+    <div class="challenge"><span class="tag">30 นาที</span><h3>C. ระบบ DANGER / SAFE</h3><p>ระยะน้อยกว่า 10 cm ให้ LED ติดและ Serial แสดง DANGER มิฉะนั้นแสดง SAFE</p><details><summary>แนวคิดเฉลย</summary><p>ตรวจ duration==0 ก่อนคำนวณ จากนั้นคำนวณ cm แล้วใช้ if (cm &lt; 10) เปิด LED และพิมพ์ DANGER; else ปิด LED และพิมพ์ SAFE</p></details></div>
+  </div>
+</section>
+
+<section class="section">
+  <p class="eyebrow">KNOWLEDGE CHECK</p><h2>ข้อสอบทฤษฎี 10 ข้อ</h2>
+  <p class="muted">เลือกคำตอบแล้วกดตรวจคะแนน ระบบจะแสดงเฉลยพร้อมคำอธิบาย</p>
+  <form id="quiz" class="quiz"></form>
+  <div class="quiz-actions"><button type="button" class="button primary" id="grade">ตรวจคำตอบ</button><button type="reset" class="button secondary" id="resetQuiz">เริ่มใหม่</button></div>
+  <div id="result" class="result" aria-live="polite"></div>
+</section>
+
+<section class="section">
+  <p class="eyebrow">FINAL CHECK</p><h2>Checklist ก่อนส่งงาน</h2>
+  <div id="checklist" class="checklist"></div>
+</section>
+</main>
+<footer><b>IoT Skill Trainer</b><p>สื่อฝึกซ้อมเพื่อการเรียนรู้ • ESP32 / Arduino IDE</p><small>หมายเหตุ: ตรวจสอบผังขา แรงดัน และชนิดโมดูลจริงก่อนจ่ายไฟทุกครั้ง</small></footer>
+<script src="script.js"></script>
+</body></html>
